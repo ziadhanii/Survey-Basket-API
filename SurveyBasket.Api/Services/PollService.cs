@@ -1,6 +1,6 @@
 namespace SurveyBasket.Api.Services;
 
-public class PoolService : IPoolService
+public class PollService : IPollService
 {
     private static readonly List<Poll> _polls =
     [

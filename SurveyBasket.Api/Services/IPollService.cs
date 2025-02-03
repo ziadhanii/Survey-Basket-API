@@ -1,6 +1,6 @@
 namespace SurveyBasket.Api.Services;
 
-public interface IPoolService
+public interface IPollService
 {
     IEnumerable<Poll> GetAll();
     Poll? Get(int id);
