@@ -5,6 +5,7 @@ namespace SurveyBasket.Api.Controllers;
 public class PollsController(IPollService pollService) : ControllerBase
 {
     [HttpGet("")]
+    [Authorize]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var polls = await pollService.GetAllAsync(cancellationToken);
@@ -60,7 +61,7 @@ public class PollsController(IPollService pollService) : ControllerBase
     }
 
     [HttpPut("{id}/togglePublish")]
-    public async Task<IActionResult> TogglePublish([FromRoute] int id,CancellationToken cancellationToken)
+    public async Task<IActionResult> TogglePublish([FromRoute] int id, CancellationToken cancellationToken)
     {
         var isUpdated = await pollService.TogglePublishStatusAsync(id, cancellationToken);
 
