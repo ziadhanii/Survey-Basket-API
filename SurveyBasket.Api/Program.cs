@@ -1,10 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddDependencies(builder.Configuration);
 
 var app = builder.Build();
-
 
 app.MapOpenApi();
 app.UseSwaggerUI(options =>
@@ -15,7 +13,8 @@ app.UseSwaggerUI(options =>
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseCors();
+
 app.UseAuthorization();
 
 app.MapControllers();
