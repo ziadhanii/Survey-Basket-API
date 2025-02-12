@@ -24,3 +24,4 @@ global using Microsoft.Extensions.Options;
 global using System.ComponentModel.DataAnnotations;
 global using System.Security.Cryptography;
 global using SurveyBasket.Api.Contracts.Polls;
+global using SurveyBasket.Api.Abstractions;
