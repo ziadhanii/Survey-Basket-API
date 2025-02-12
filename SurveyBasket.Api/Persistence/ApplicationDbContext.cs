@@ -18,10 +18,10 @@ public class ApplicationDbContext(
     {
         var entries = ChangeTracker.Entries<AuditableEntity>();
 
-        var currentUserId = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-
         foreach (var entityEntry in entries)
         {
+            var currentUserId = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
             if (entityEntry.State == EntityState.Added)
             {
                 entityEntry.Property(x => x.CreatedById).CurrentValue = currentUserId;
