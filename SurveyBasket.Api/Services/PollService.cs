@@ -4,8 +4,12 @@ namespace SurveyBasket.Api.Services;
 
 public class PollService(ApplicationDbContext context) : IPollService
 {
-    public async Task<IEnumerable<Poll>> GetAllAsync(CancellationToken cancellationToken = default) =>
-        await context.Polls.AsNoTracking().ToListAsync(cancellationToken);
+    public async Task<IEnumerable<PollResponse>> GetAllAsync(CancellationToken cancellationToken = default)
+    {
+        var polls = await context.Polls.AsNoTracking().ToListAsync(cancellationToken);
+        return polls.Adapt<IEnumerable<PollResponse>>();
+    }
+
 
     public async Task<Result<PollResponse>> GetAsync(int id, CancellationToken cancellationToken = default)
     {
