@@ -23,9 +23,11 @@ public class PollsController(IPollService pollService) : ControllerBase
     public async Task<IActionResult> Add([FromBody] PollRequest request,
         CancellationToken cancellationToken)
     {
-        var newPoll = await pollService.AddAsync(request, cancellationToken);
+        var result = await pollService.AddAsync(request, cancellationToken);
 
-        return CreatedAtAction(nameof(Get), new { id = newPoll.Id }, newPoll);
+        return result.IsSuccess
+            ? CreatedAtAction(nameof(Get), new { id = result.Value.Id }, result.Value)
+            : result.ToProblem();
     }
 
     [HttpPut("{id}")]
