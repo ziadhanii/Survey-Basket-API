@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Http;
+using SurveyBasket.Api.Abstractions;
+
 namespace SurveyBasket.Api.Errors;
 
 public static class UserErrors

@@ -2,13 +2,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencies(builder.Configuration);
 
+
 var app = builder.Build();
 
-app.MapOpenApi();
-app.UseSwaggerUI(options =>
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    options.SwaggerEndpoint("/openapi/v1.json", "v1");
-    options.RoutePrefix = string.Empty;
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    c.RoutePrefix = string.Empty;
 });
 
 app.UseHttpsRedirection();

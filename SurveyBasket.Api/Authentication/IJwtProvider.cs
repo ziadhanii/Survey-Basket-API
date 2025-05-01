@@ -1,3 +1,5 @@
+using SurveyBasket.Api.Entities;
+
 namespace SurveyBasket.Api.Authentication;
 
 public interface IJwtProvider

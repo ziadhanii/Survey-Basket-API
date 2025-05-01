@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using SurveyBasket.Api.Contracts.Polls;
+
 namespace SurveyBasket.Api.Services;
 
 public interface IPollService

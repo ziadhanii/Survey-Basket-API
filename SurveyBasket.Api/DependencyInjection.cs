@@ -1,4 +1,6 @@
+using Microsoft.OpenApi.Models;
 using SurveyBasket.Api.Errors;
+
 
 namespace SurveyBasket.Api;
 
@@ -27,7 +29,6 @@ public static class DependencyInjection
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
 
-        services.AddOpenApi();
 
         services
             .AddSwaggerServices()
@@ -36,8 +37,9 @@ public static class DependencyInjection
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IPollService, PollService>();
-        
-        
+        services.AddScoped<IQuestionService, QuestionService>();
+
+
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
 
@@ -47,6 +49,45 @@ public static class DependencyInjection
     private static IServiceCollection AddSwaggerServices(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Survey Basket API",
+                Version = "v1",
+                Description = "API for Survey Basket",
+                Contact = new OpenApiContact
+                {
+                    Name = "Survey Basket",
+                    Url = new Uri("https://github.com/kevindunn/SurveyBasket")
+                },
+            });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "Enter JWT Bearer token **_only_**",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        });
         return services;
     }
 

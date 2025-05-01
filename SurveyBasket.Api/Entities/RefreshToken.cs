@@ -9,4 +9,4 @@ public class RefreshToken
     public DateTime? RevokedOn { get; set; }
     public bool IsExpired => DateTime.UtcNow >= ExpiresOn;
     public bool IsActive => RevokedOn is null && !IsExpired;
-} 
+}

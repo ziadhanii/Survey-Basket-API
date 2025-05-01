@@ -1,3 +1,8 @@
+using System.Threading;
+using System.Threading.Tasks;
+using SurveyBasket.Api.Abstractions;
+using SurveyBasket.Api.Contracts.Authentication;
+
 namespace SurveyBasket.Api.Services;
 
 public interface IAuthService
