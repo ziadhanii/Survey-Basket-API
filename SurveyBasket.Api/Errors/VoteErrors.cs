@@ -8,7 +8,7 @@ public static class VoteErrors
         StatusCodes.Status409Conflict);
 
 
-    public static readonly Error InvalidQuestion = new(
+    public static readonly Error InvalidQuestions = new(
         "Vote.InvalidQuestion",
         "Invalid questions provided",
         StatusCodes.Status400BadRequest
