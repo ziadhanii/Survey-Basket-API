@@ -9,4 +9,7 @@ public interface IResultService
 
     Task<Result<IEnumerable<VotesPerDayResponse>>> GetVotesPerDayAsync(int pollId,
         CancellationToken cancellationToken = default);
+
+    Task<Result<IEnumerable<VotesPerQuestionResponse>>> GetVotesPerQuestionAsync(int pollId,
+        CancellationToken cancellationToken = default);
 }
