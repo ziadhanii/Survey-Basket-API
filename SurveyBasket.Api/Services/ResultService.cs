@@ -1,6 +1,3 @@
-using SurveyBasket.Api.Contracts.Results;
-using SurveyBasket.Api.Errors;
-
 namespace SurveyBasket.Api.Services;
 
 public class ResultService(ApplicationDbContext context) : IResultService

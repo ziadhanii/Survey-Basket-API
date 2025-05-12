@@ -1,7 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SurveyBasket.Api.Entities;
-
 namespace SurveyBasket.Api.Persistence.EntitiesConfigurations;
 
 public class PollConfiguration : IEntityTypeConfiguration<Poll>
@@ -10,7 +6,7 @@ public class PollConfiguration : IEntityTypeConfiguration<Poll>
     {
         // Configure `Title` property
         builder.HasIndex(x => x.Title).IsUnique();
-        
+
         builder.Property(p => p.Title)
             .HasMaxLength(100); // Limit the length to 200 characters
 

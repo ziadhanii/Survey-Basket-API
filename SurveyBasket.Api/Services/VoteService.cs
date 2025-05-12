@@ -1,6 +1,3 @@
-using SurveyBasket.Api.Contracts.Votes;
-using SurveyBasket.Api.Errors;
-
 namespace SurveyBasket.Api.Services;
 
 public class VoteService(ApplicationDbContext context) : IVoteService

@@ -1,4 +1,3 @@
-using System;
 
 namespace SurveyBasket.Api.Contracts.Authentication;
 

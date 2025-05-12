@@ -1,5 +1,3 @@
-using System;
-
 namespace SurveyBasket.Api.Contracts.Polls;
 
 public record PollResponse(

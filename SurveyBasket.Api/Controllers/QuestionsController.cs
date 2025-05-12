@@ -1,5 +1,3 @@
-using SurveyBasket.Api.Contracts.Questions;
-
 namespace SurveyBasket.Api.Controllers;
 
 [Route("api/polls/{pollId}/[controller]")]

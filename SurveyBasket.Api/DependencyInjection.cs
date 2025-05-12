@@ -1,7 +1,3 @@
-using Microsoft.OpenApi.Models;
-using SurveyBasket.Api.Errors;
-
-
 namespace SurveyBasket.Api;
 
 public static class DependencyInjection
@@ -61,7 +57,7 @@ public static class DependencyInjection
                 Contact = new OpenApiContact
                 {
                     Name = "Survey Basket",
-                    Url = new Uri("https://github.com/kevindunn/SurveyBasket")
+                    Url = new Uri("https://github.com/ziadhanii/Survey-Basket-API")
                 },
             });
 

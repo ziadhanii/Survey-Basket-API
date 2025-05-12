@@ -1,4 +1,3 @@
-using SurveyBasket.Api.Extensions;
 
 namespace SurveyBasket.Api.Persistence;
 

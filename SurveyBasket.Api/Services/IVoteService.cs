@@ -1,5 +1,3 @@
-using SurveyBasket.Api.Contracts.Votes;
-
 namespace SurveyBasket.Api.Services;
 
 public interface IVoteService
