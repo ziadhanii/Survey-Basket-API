@@ -1,7 +1,11 @@
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDependencies(builder.Configuration);
 
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
@@ -11,6 +15,8 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     c.RoutePrefix = string.Empty;
 });
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

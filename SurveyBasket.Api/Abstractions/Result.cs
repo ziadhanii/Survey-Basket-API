@@ -1,5 +1,3 @@
-using System;
-
 namespace SurveyBasket.Api.Abstractions;
 
 public class Result
