@@ -6,5 +6,9 @@ public class MappingConfigurations : IRegister
     {
         config.NewConfig<QuestionRequest, Question>()
             .Map(dest => dest.Answers, src => src.Answers.Select(x => new Answer { Content = x }));
+
+
+        config.NewConfig<RegisterRequest, ApplicationUser>()
+            .Map(dest => dest.UserName, src => src.Email);
     }
 }

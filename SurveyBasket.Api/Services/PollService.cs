@@ -1,13 +1,12 @@
 namespace SurveyBasket.Api.Services;
 
-public class PollService(ApplicationDbContext context) : IPollService
+public class PollService(ApplicationDbContext context, INotificationService notificationService) : IPollService
 {
     public async Task<IEnumerable<PollResponse>> GetAllAsync(CancellationToken cancellationToken = default) =>
         await context.Polls
             .AsNoTracking()
             .ProjectToType<PollResponse>()
             .ToListAsync(cancellationToken);
-
 
     public async Task<IEnumerable<PollResponse>> GetCurrentAsync(CancellationToken cancellationToken = default) =>
         await context.Polls
@@ -16,7 +15,6 @@ public class PollService(ApplicationDbContext context) : IPollService
             .AsNoTracking()
             .ProjectToType<PollResponse>()
             .ToListAsync(cancellationToken);
-
 
     public async Task<Result<PollResponse>> GetAsync(int id, CancellationToken cancellationToken = default)
     {
@@ -29,7 +27,8 @@ public class PollService(ApplicationDbContext context) : IPollService
 
     public async Task<Result<PollResponse>> AddAsync(PollRequest request, CancellationToken cancellationToken = default)
     {
-        var isExistingTitle = await context.Polls.AnyAsync(p => p.Title == request.Title, cancellationToken);
+        var isExistingTitle =
+            await context.Polls.AnyAsync(x => x.Title == request.Title, cancellationToken: cancellationToken);
 
         if (isExistingTitle)
             return Result.Failure<PollResponse>(PollErrors.DuplicatedPollTitle);
@@ -44,14 +43,13 @@ public class PollService(ApplicationDbContext context) : IPollService
 
     public async Task<Result> UpdateAsync(int id, PollRequest request, CancellationToken cancellationToken = default)
     {
-        var currentPoll = await context.Polls.FindAsync(id, cancellationToken);
-
-
-        var isExistingTitle =
-            await context.Polls.AnyAsync(p => p.Title == request.Title && p.Id != id, cancellationToken);
+        var isExistingTitle = await context.Polls.AnyAsync(x => x.Title == request.Title && x.Id != id,
+            cancellationToken: cancellationToken);
 
         if (isExistingTitle)
             return Result.Failure<PollResponse>(PollErrors.DuplicatedPollTitle);
+
+        var currentPoll = await context.Polls.FindAsync(id, cancellationToken);
 
         if (currentPoll is null)
             return Result.Failure(PollErrors.PollNotFound);
@@ -68,7 +66,7 @@ public class PollService(ApplicationDbContext context) : IPollService
 
     public async Task<Result> DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
-        var poll = await context.Polls.FindAsync(id, cancellationToken);
+        var poll = await GetAsync(id, cancellationToken);
 
         if (poll is null)
             return Result.Failure(PollErrors.PollNotFound);
@@ -90,6 +88,9 @@ public class PollService(ApplicationDbContext context) : IPollService
         poll.IsPublished = !poll.IsPublished;
 
         await context.SaveChangesAsync(cancellationToken);
+
+        if (poll.IsPublished && poll.StartsAt == DateOnly.FromDateTime(DateTime.UtcNow))
+            BackgroundJob.Enqueue(() => notificationService.SendNewPollsNotification(poll.Id));
 
         return Result.Success();
     }

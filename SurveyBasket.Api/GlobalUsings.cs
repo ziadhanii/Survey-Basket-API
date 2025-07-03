@@ -34,3 +34,8 @@ global using SurveyBasket.Api.Contracts.Results;
 global using SurveyBasket.Api.Contracts.Votes;
 global using SurveyBasket.Api.Contracts.Answers;
 global using SurveyBasket.Api.Extensions;
+global using Microsoft.AspNetCore.Identity.UI.Services;
+global using SurveyBasket.Api.Helpers;
+global using Hangfire;
+global using HangfireBasicAuthenticationFilter;
+global using SurveyBasket.Api.Settings;

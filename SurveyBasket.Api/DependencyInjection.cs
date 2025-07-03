@@ -7,6 +7,8 @@ public static class DependencyInjection
     {
         services.AddControllers();
 
+        services.AddHybridCache();
+
         services.AddCors(options =>
             options.AddDefaultPolicy(builder =>
                 builder
@@ -32,15 +34,22 @@ public static class DependencyInjection
             .AddFluentValidationConfig();
 
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IEmailSender, EmailService>();
+
         services.AddScoped<IPollService, PollService>();
         services.AddScoped<IQuestionService, QuestionService>();
         services.AddScoped<IVoteService, VoteService>();
         services.AddScoped<IResultService, ResultService>();
+        services.AddScoped<INotificationService, NotificationService>();
+        services.AddScoped<IUserService, UserService>();
 
-
+        services.AddBackgroundJobsConfig(configuration);
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
 
+        services.AddHttpContextAccessor();
+
+        services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
         return services;
     }
 
@@ -112,7 +121,8 @@ public static class DependencyInjection
         IConfiguration configuration)
     {
         services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
 
 
         services.AddSingleton<IJwtProvider, JwtProvider>();
@@ -143,6 +153,28 @@ public static class DependencyInjection
                     ValidAudience = jwtSettings?.Audience
                 };
             });
+
+        services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequiredLength = 8;
+            options.SignIn.RequireConfirmedEmail = true;
+            options.User.RequireUniqueEmail = true;
+        });
+
+        return services;
+    }
+
+
+    private static IServiceCollection AddBackgroundJobsConfig(this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.AddHangfire(config => config
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UseSqlServerStorage(configuration.GetConnectionString("HangfireConnection")));
+
+        services.AddHangfireServer();
 
         return services;
     }
