@@ -66,7 +66,8 @@ public static class DependencyInjection
                 Contact = new OpenApiContact
                 {
                     Name = "Survey Basket",
-                    Url = new Uri("https://github.com/ziadhanii/Survey-Basket-API")
+                    Url = new Uri("https://github.com/ziadhanii/Survey-Basket-API"),
+                    Email = "ziadhani64@gmail.com"
                 },
             });
 
@@ -120,7 +121,7 @@ public static class DependencyInjection
     private static IServiceCollection AddAuthConfig(this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddIdentity<ApplicationUser, IdentityRole>()
+        services.AddIdentity<ApplicationUser, ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 

@@ -1,10 +1,9 @@
-
 namespace SurveyBasket.Api.Persistence;
 
 public class ApplicationDbContext(
     DbContextOptions<ApplicationDbContext> options,
     IHttpContextAccessor httpContextAccessor) :
-    IdentityDbContext<ApplicationUser>(options)
+    IdentityDbContext<ApplicationUser, ApplicationRole, string>(options)
 {
     public DbSet<Answer> Answers { get; set; }
     public DbSet<Poll> Polls { get; set; }
