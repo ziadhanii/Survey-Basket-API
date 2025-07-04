@@ -2,7 +2,7 @@ namespace SurveyBasket.Api.Contracts.Users;
 
 public record UserProfileResponse(
     string Email,
-    string Username,
+    string UserName,
     string FirstName,
     string LastName
 );

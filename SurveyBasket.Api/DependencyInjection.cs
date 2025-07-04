@@ -37,6 +37,7 @@ public static class DependencyInjection
 
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEmailSender, EmailService>();
+        services.AddScoped<IRoleService, RoleService>();
 
         services.AddScoped<IPollService, PollService>();
         services.AddScoped<IQuestionService, QuestionService>();
@@ -129,7 +130,7 @@ public static class DependencyInjection
 
         services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
-        
+
         services.AddSingleton<IJwtProvider, JwtProvider>();
 
         services.AddOptions<JwtOptions>()
