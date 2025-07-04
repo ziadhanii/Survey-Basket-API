@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using SurveyBasket.Api.Authentication.Filters;
+
 namespace SurveyBasket.Api;
 
 public static class DependencyInjection
@@ -26,7 +29,6 @@ public static class DependencyInjection
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
-
 
         services
             .AddSwaggerServices()
@@ -125,7 +127,9 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-
+        services.AddTransient<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
+        
         services.AddSingleton<IJwtProvider, JwtProvider>();
 
         services.AddOptions<JwtOptions>()

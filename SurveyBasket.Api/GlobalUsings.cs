@@ -39,3 +39,5 @@ global using SurveyBasket.Api.Helpers;
 global using Hangfire;
 global using HangfireBasicAuthenticationFilter;
 global using SurveyBasket.Api.Settings;
+global using SurveyBasket.Api.Abstractions.Consts;
+global using System.Text.Json;
