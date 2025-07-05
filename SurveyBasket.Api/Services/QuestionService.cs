@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Caching.Hybrid;
 using SurveyBasket.Api.Contracts.Common;
+using System.Linq.Dynamic.Core;
 
 namespace SurveyBasket.Api.Services;
 
@@ -18,20 +19,44 @@ public class QuestionService(
         if (!pollIsExists)
             return Result.Failure<PaginatedList<QuestionResponse>>(PollErrors.PollNotFound);
 
+        // var query = context.Questions
+        //     .Where(
+        //         x => x.PollId == pollId &&
+        //              (
+        //                  string.IsNullOrEmpty(filters.SearchValue) ||
+        //                  x.Content.Contains(filters.SearchValue)
+        //              )
+        //     )
+        //     .Include(x => x.Answers)
+        //     .ProjectToType<QuestionResponse>()
+        //     .AsNoTracking();
+        //
+        // var questions =
+        //     await PaginatedList<QuestionResponse>.CreateAsync(query, filters.PageNumber, filters.PageSize,
+        //         cancellationToken);
+        //
+        // return Result.Success(questions);
+
         var query = context.Questions
-            .Where(
-                x => x.PollId == pollId &&
-                     (
-                         string.IsNullOrEmpty(filters.SearchValue) ||
-                         x.Content.Contains(filters.SearchValue)
-                     )
-            )
+            .Where(x => x.PollId == pollId);
+
+        if (!string.IsNullOrEmpty(filters.SearchValue))
+        {
+            query = query.Where(x => x.Content.Contains(filters.SearchValue));
+        }
+
+        if (!string.IsNullOrEmpty(filters.SortColumn))
+        {
+            query = query.OrderBy($"{filters.SortColumn} {filters.SortDirection}");
+        }
+
+        var source = query
             .Include(x => x.Answers)
             .ProjectToType<QuestionResponse>()
             .AsNoTracking();
 
         var questions =
-            await PaginatedList<QuestionResponse>.CreateAsync(query, filters.PageNumber, filters.PageSize,
+            await PaginatedList<QuestionResponse>.CreateAsync(source, filters.PageNumber, filters.PageSize,
                 cancellationToken);
 
         return Result.Success(questions);
