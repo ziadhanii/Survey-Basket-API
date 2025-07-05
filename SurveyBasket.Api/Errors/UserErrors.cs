@@ -3,7 +3,13 @@ namespace SurveyBasket.Api.Errors;
 public static class UserErrors
 {
     public static readonly Error InvalidCredentials =
-        new("User.InvalidCredentials", "Invalid email or password", StatusCodes.Status401Unauthorized);
+        new("User.InvalidCredentials", "Invalid email/password", StatusCodes.Status401Unauthorized);
+
+    public static readonly Error DisabledUser =
+        new("User.DisabledUser", "Disabled user, please contact your administrator", StatusCodes.Status401Unauthorized);
+
+    public static readonly Error LockedUser =
+        new("User.LockedUser", "Locked user, please contact your administrator", StatusCodes.Status401Unauthorized);
 
     public static readonly Error InvalidJwtToken =
         new("User.InvalidJwtToken", "Invalid Jwt token", StatusCodes.Status401Unauthorized);
@@ -23,4 +29,10 @@ public static class UserErrors
 
     public static readonly Error DuplicatedConfirmation =
         new("User.DuplicatedConfirmation", "Email already confirmed", StatusCodes.Status400BadRequest);
+
+    public static readonly Error UserNotFound =
+        new("User.UserNotFound", "User is not found", StatusCodes.Status404NotFound);
+
+    public static readonly Error InvalidRoles =
+        new("Role.InvalidRoles", "Invalid roles", StatusCodes.Status400BadRequest);
 }
