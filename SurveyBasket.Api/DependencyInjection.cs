@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using SurveyBasket.Api.Authentication.Filters;
+using SurveyBasket.Api.Health;
 
 namespace SurveyBasket.Api;
 
@@ -57,6 +59,12 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
 
         services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
+
+        services.AddHealthChecks()
+            .AddSqlServer(connectionString: connectionString, name: "database")
+            .AddHangfire(options => { options.MinimumAvailableServers = 1; })
+            .AddCheck<MailProviderHealthCheck>("mail service");
+
         return services;
     }
 
